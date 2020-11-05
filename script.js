@@ -39,7 +39,7 @@ function ImageClickEvent(){
       $dataScaleY.val(e.detail.scaleY);
     }
   };
-  $image.cropper('destroy').attr('src', 'http://gi.esmplus.com/ks31206/mask/ms.jpg').cropper(options);
+  $image.cropper('destroy').attr('src', 'https://gi.esmplus.com/ks31206/mask/ms.jpg').cropper(options);
   $inputImage.val('');
   
   // window.open('http://www.naver.com','_blank');
