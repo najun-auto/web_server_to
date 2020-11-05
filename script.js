@@ -1,7 +1,5 @@
 
 
-test
-
 // //IE10+ blur			
 // if (typeof document.msHidden != "undefined") {
 // 	[].slice.call(document.querySelectorAll(".cover img")).forEach(function(img) {
