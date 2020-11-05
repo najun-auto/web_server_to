@@ -1,4 +1,4 @@
-
+// included for debugging
 
 // //IE10+ blur			
 // if (typeof document.msHidden != "undefined") {
@@ -22,6 +22,13 @@
 //   window.open('http://www.naver.com','_blank');
 // }
 
+function GetImgUrl(){
+  var imgurl = prompt("Input your URL", "https://www.naver.com");
+  if (imgurl != null){
+    document.getElementById("test_img").src = imgurl;
+  }
+}
+
 function ImageClickEvent(){
   var $image = $('#image');  
   var $inputImage = $('#inputImage');
@@ -29,19 +36,22 @@ function ImageClickEvent(){
     // aspectRatio: 16 / 9,
     aspectRatio: 1 / 1,
     preview: '.img-preview',
-    crop: function (e) {
-      $dataX.val(Math.round(e.detail.x));
-      $dataY.val(Math.round(e.detail.y));
-      $dataHeight.val(Math.round(e.detail.height));
-      $dataWidth.val(Math.round(e.detail.width));
-      $dataRotate.val(e.detail.rotate);
-      $dataScaleX.val(e.detail.scaleX);
-      $dataScaleY.val(e.detail.scaleY);
-    }
+    // crop: function (e) {
+    //   $dataX.val(Math.round(e.detail.x));
+    //   $dataY.val(Math.round(e.detail.y));
+    //   $dataHeight.val(Math.round(e.detail.height));
+    //   $dataWidth.val(Math.round(e.detail.width));
+    //   $dataRotate.val(e.detail.rotate);
+    //   $dataScaleX.val(e.detail.scaleX);
+    //   $dataScaleY.val(e.detail.scaleY);
+    // }
   };
   $image.cropper('destroy').attr('src', 'https://gi.esmplus.com/ks31206/mask/ms.jpg').cropper(options);
   $inputImage.val('');
-  
+
+  var myScript = document.getElementById('test_img');
+  var myScriptSrc = myScript.getAttribute('src');
+  console.log(myScriptSrc); 
   // window.open('http://www.naver.com','_blank');
 }
 // main.js
