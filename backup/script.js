@@ -1,3 +1,49 @@
+
+
+// //IE10+ blur			
+// if (typeof document.msHidden != "undefined") {
+// 	[].slice.call(document.querySelectorAll(".cover img")).forEach(function(img) {
+// 		img.classList.add("hidden");
+		
+// 		var myImage = new Image(), src = img.src;
+// 		// img.insertAdjacentHTML("afterend", '<svg class="blur" width="160" height="140">\
+// 		// 	<image xlink:href="'+ src +'" src="'+ src +'" width="160" height="140" y="0" x="0" filter="url(#blur)" />\
+// 		// </svg>');
+// 		img.insertAdjacentHTML("afterend", '<svg class="blur" width="400" height="400">\
+// 			<image xlink:href="'+ src +'" src="'+ src +'" width="400" height="400" y="0" x="0" filter="url(#blur)" />\
+// 		</svg>');
+// 	});
+// }
+
+// function ImageClickEvent(){
+//   var $image = $('#image');  
+//   var $inputImage = $('#inputImage');
+//   $inputImage.change()
+//   window.open('http://www.naver.com','_blank');
+// }
+
+function ImageClickEvent(){
+  var $image = $('#image');  
+  var $inputImage = $('#inputImage');
+  var options = {
+    // aspectRatio: 16 / 9,
+    aspectRatio: 1 / 1,
+    preview: '.img-preview',
+    crop: function (e) {
+      $dataX.val(Math.round(e.detail.x));
+      $dataY.val(Math.round(e.detail.y));
+      $dataHeight.val(Math.round(e.detail.height));
+      $dataWidth.val(Math.round(e.detail.width));
+      $dataRotate.val(e.detail.rotate);
+      $dataScaleX.val(e.detail.scaleX);
+      $dataScaleY.val(e.detail.scaleY);
+    }
+  };
+  $image.cropper('destroy').attr('src', 'https://gi.esmplus.com/ks31206/mask/ms.jpg').cropper(options);
+  $inputImage.val('');
+  
+  // window.open('http://www.naver.com','_blank');
+}
 // main.js
 $(function () {
 
@@ -15,7 +61,8 @@ $(function () {
   var $dataScaleX = $('#dataScaleX');
   var $dataScaleY = $('#dataScaleY');
   var options = {
-        aspectRatio: 16 / 9,
+        // aspectRatio: 16 / 9,
+        aspectRatio: 1 / 1,
         preview: '.img-preview',
         crop: function (e) {
           $dataX.val(Math.round(e.detail.x));
@@ -271,8 +318,9 @@ $(function () {
     });
   } else {
     $inputImage.prop('disabled', true).parent().addClass('disabled');
-  }
-
+  }   
+ 
+  
 });
 
 // cropper.js (same as jquery-cropper.js ?)
@@ -1728,8 +1776,10 @@ $(function () {
       if (aspectRatio) {
         if (canvasData.height * aspectRatio > canvasData.width) {
           cropBoxData.height = cropBoxData.width / aspectRatio;
+          // cropBoxData.height = 200
         } else {
           cropBoxData.width = cropBoxData.height * aspectRatio;
+          // cropBoxData.width = 200
         }
       }
 
@@ -3356,8 +3406,9 @@ $(function () {
           initialWidth = _getData.width,
           initialHeight = _getData.height;
 
+           
       var ratio = source.width / Math.floor(canvasData.naturalWidth);
-
+      
       if (ratio !== 1) {
         initialX *= ratio;
         initialY *= ratio;
@@ -3366,16 +3417,22 @@ $(function () {
       }
 
       var aspectRatio = initialWidth / initialHeight;
+      if( (options.width == options.height) && ((options.width == 1000) || (options.width == 860)) )
+        var aspectRatio = 1;
+      
       var maxSizes = getAdjustedSizes({
         aspectRatio: aspectRatio,
         width: options.maxWidth || Infinity,
         height: options.maxHeight || Infinity
-      });
+      });          
+                  
+
       var minSizes = getAdjustedSizes({
         aspectRatio: aspectRatio,
         width: options.minWidth || 0,
         height: options.minHeight || 0
       }, 'cover');
+      
 
       var _getAdjustedSizes = getAdjustedSizes({
         aspectRatio: aspectRatio,
@@ -3385,8 +3442,16 @@ $(function () {
           width = _getAdjustedSizes.width,
           height = _getAdjustedSizes.height;
 
+      
+      
       width = Math.min(maxSizes.width, Math.max(minSizes.width, width));
       height = Math.min(maxSizes.height, Math.max(minSizes.height, height));
+
+      
+      // if((options.width == options.height) &&( (options.height == 1000) || (options.height ==860) )){
+      //   width = options.width;
+      //   height = options.height;
+      // }
 
       var canvas = document.createElement('canvas');
       var context = canvas.getContext('2d');
@@ -3411,6 +3476,7 @@ $(function () {
       // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D.drawImage
       var sourceWidth = source.width;
       var sourceHeight = source.height;
+
 
       // Source canvas parameters
       var srcX = initialX;
@@ -3445,24 +3511,34 @@ $(function () {
         srcHeight = 0;
         dstY = 0;
         dstHeight = 0;
+       
       } else if (srcY <= 0) {
         dstY = -srcY;
         srcY = 0;
         srcHeight = Math.min(sourceHeight, initialHeight + srcY);
         dstHeight = srcHeight;
+       
       } else if (srcY <= sourceHeight) {
         dstY = 0;
         srcHeight = Math.min(initialHeight, sourceHeight - srcY);
         dstHeight = srcHeight;
+       
       }
 
       var params = [srcX, srcY, srcWidth, srcHeight];
-
+      
       // Avoid "IndexSizeError"
       if (dstWidth > 0 && dstHeight > 0) {
         var scale = width / initialWidth;
-
-        params.push(dstX * scale, dstY * scale, dstWidth * scale, dstHeight * scale);
+        if( (options.width == options.height) && ((options.width == 1000) || (options.width == 860)) )
+          var scale_2= height / initialHeight;
+        else
+          var scale_2= scale;
+        
+        
+        // params.push(dstX * scale, dstY * scale, dstWidth * scale, dstHeight * scale);
+        params.push(dstX * scale, dstY * scale_2, dstWidth * scale, dstHeight * scale_2);
+        
       }
 
       // All the numerical parameters should be integer for `drawImage`
