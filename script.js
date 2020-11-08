@@ -1,35 +1,6 @@
 
 
 
-function fetchData() {
-  axios.get('https://www.goodreads.com/review/list/4039932?shelf=read')
-    .then((response) => {
-      if (response.status === 200) {
-        var html = response.data;
-        let $ = cheerio.load(html);
-        var books = [];
-        $('.bookalike').each(function (i, elem) {
-          books[i] = {
-            title: $(this).children('.title').children('.value').text()
-              .replace(/(\r\n|\n|\r)/gm, "")
-              .trim(),
-            author: $(this).children('.author').children('.value').text()
-              .replace('*', '')
-              .split(',')
-              .reverse()
-              .map(name => name.trim())
-              .join(' '),
-            page_num: $(this).children('.num_pages').children('.value').text().split('pp')[0].trim(),
-            rating: $(this).children('.avg_rating').children('.value').text().trim()
-          }
-        });
-        console.log(books[0].title);
-        console.log('File successfully written!');
-
-      }
-    }, (error) => console.log(error));
-}
-
 var elems = document.getElementsByClassName('container');
 var elems2 = document.getElementsByClassName('container2');
 for (var i = 0; i < elems.length; i += 1) {
