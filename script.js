@@ -1,36 +1,71 @@
-// included for debugging
 
-// //IE10+ blur			
-// if (typeof document.msHidden != "undefined") {
-// 	[].slice.call(document.querySelectorAll(".cover img")).forEach(function(img) {
-// 		img.classList.add("hidden");
-		
-// 		var myImage = new Image(), src = img.src;
-// 		// img.insertAdjacentHTML("afterend", '<svg class="blur" width="160" height="140">\
-// 		// 	<image xlink:href="'+ src +'" src="'+ src +'" width="160" height="140" y="0" x="0" filter="url(#blur)" />\
-// 		// </svg>');
-// 		img.insertAdjacentHTML("afterend", '<svg class="blur" width="400" height="400">\
-// 			<image xlink:href="'+ src +'" src="'+ src +'" width="400" height="400" y="0" x="0" filter="url(#blur)" />\
-// 		</svg>');
-// 	});
-// }
 
-// function ImageClickEvent(){
-//   var $image = $('#image');  
-//   var $inputImage = $('#inputImage');
-//   $inputImage.change()
-//   window.open('http://www.naver.com','_blank');
-// }
 
-function GetImgUrl(){
+function fetchData() {
+  axios.get('https://www.goodreads.com/review/list/4039932?shelf=read')
+    .then((response) => {
+      if (response.status === 200) {
+        var html = response.data;
+        let $ = cheerio.load(html);
+        var books = [];
+        $('.bookalike').each(function (i, elem) {
+          books[i] = {
+            title: $(this).children('.title').children('.value').text()
+              .replace(/(\r\n|\n|\r)/gm, "")
+              .trim(),
+            author: $(this).children('.author').children('.value').text()
+              .replace('*', '')
+              .split(',')
+              .reverse()
+              .map(name => name.trim())
+              .join(' '),
+            page_num: $(this).children('.num_pages').children('.value').text().split('pp')[0].trim(),
+            rating: $(this).children('.avg_rating').children('.value').text().trim()
+          }
+        });
+        console.log(books[0].title);
+        console.log('File successfully written!');
+
+      }
+    }, (error) => console.log(error));
+}
+
+var elems = document.getElementsByClassName('container');
+var elems2 = document.getElementsByClassName('container2');
+for (var i = 0; i < elems.length; i += 1) {
+  elems[i].style.display = 'none';
+  elems2[i].style.display = 'none';
+}
+
+
+function GetImgUrl() {
   var imgurl = prompt("Input your URL", "https://www.naver.com");
-  if (imgurl != null){
+  if (imgurl != null) {
     document.getElementById("test_img").src = imgurl;
   }
 }
+function hstest() {
+  var elems = document.getElementsByClassName('container');
+  var elems2 = document.getElementsByClassName('container2');
+  var elems3 = document.getElementsByClassName('container_input');
+  for (var i = 0; i < elems.length; i += 1) {
+    elems[i].style.display = 'block';
+    elems2[i].style.display = 'block';
+    elems3[i].style.display = 'none';
+  }
 
-function ImageClickEvent(){
-  var $image = $('#image');  
+  var url_temp = document.getElementById("geturl").value;
+  document.querySelector("#mainImg")
+
+  // var x = document.getElementsByClassName(".container");  
+  // if (x.style.display === "none") {
+  //   x.style.display = "block";
+  // } else {
+  //   x.style.display = "none";
+  // }
+}
+function ImageClickEvent() {
+  var $image = $('#image');
   var $inputImage = $('#inputImage');
   var options = {
     // aspectRatio: 16 / 9,
@@ -51,7 +86,7 @@ function ImageClickEvent(){
 
   var myScript = document.getElementById('test_img');
   var myScriptSrc = myScript.getAttribute('src');
-  console.log(myScriptSrc); 
+  console.log(myScriptSrc);
   // window.open('http://www.naver.com','_blank');
 }
 // main.js
@@ -59,7 +94,7 @@ $(function () {
 
   'use strict';
 
-  var console = window.console || { log: function () {} };
+  var console = window.console || { log: function () { } };
   var URL = window.URL || window.webkitURL;
   var $image = $('#image');
   var $download = $('#download');
@@ -71,19 +106,19 @@ $(function () {
   var $dataScaleX = $('#dataScaleX');
   var $dataScaleY = $('#dataScaleY');
   var options = {
-        // aspectRatio: 16 / 9,
-        aspectRatio: 1 / 1,
-        preview: '.img-preview',
-        crop: function (e) {
-          $dataX.val(Math.round(e.detail.x));
-          $dataY.val(Math.round(e.detail.y));
-          $dataHeight.val(Math.round(e.detail.height));
-          $dataWidth.val(Math.round(e.detail.width));
-          $dataRotate.val(e.detail.rotate);
-          $dataScaleX.val(e.detail.scaleX);
-          $dataScaleY.val(e.detail.scaleY);
-        }
-      };
+    // aspectRatio: 16 / 9,
+    aspectRatio: 1 / 1,
+    preview: '.img-preview',
+    crop: function (e) {
+      $dataX.val(Math.round(e.detail.x));
+      $dataY.val(Math.round(e.detail.y));
+      $dataHeight.val(Math.round(e.detail.height));
+      $dataWidth.val(Math.round(e.detail.width));
+      $dataRotate.val(e.detail.rotate);
+      $dataScaleX.val(e.detail.scaleX);
+      $dataScaleY.val(e.detail.scaleY);
+    }
+  };
   var originalImageURL = $image.attr('src');
   var uploadedImageName = 'cropped.jpg';
   var uploadedImageType = 'image/jpeg';
@@ -328,9 +363,9 @@ $(function () {
     });
   } else {
     $inputImage.prop('disabled', true).parent().addClass('disabled');
-  }   
- 
-  
+  }
+
+
 });
 
 // cropper.js (same as jquery-cropper.js ?)
@@ -346,9 +381,10 @@ $(function () {
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
-  typeof define === 'function' && define.amd ? define(['jquery'], factory) :
-  (factory(global.jQuery));
-}(this, (function ($) { 'use strict';
+    typeof define === 'function' && define.amd ? define(['jquery'], factory) :
+      (factory(global.jQuery));
+}(this, (function ($) {
+  'use strict';
 
   $ = $ && $.hasOwnProperty('default') ? $['default'] : $;
 
@@ -621,16 +657,16 @@ $(function () {
   function forEach(data, callback) {
     if (data && isFunction(callback)) {
       if (Array.isArray(data) || isNumber(data.length) /* array-like */) {
-          var length = data.length;
+        var length = data.length;
 
-          var i = void 0;
+        var i = void 0;
 
-          for (i = 0; i < length; i += 1) {
-            if (callback.call(data, data[i], i, data) === false) {
-              break;
-            }
+        for (i = 0; i < length; i += 1) {
+          if (callback.call(data, data[i], i, data) === false) {
+            break;
           }
-        } else if (isObject(data)) {
+        }
+      } else if (isObject(data)) {
         Object.keys(data).forEach(function (key) {
           callback.call(data, data[key], key, data);
         });
@@ -866,7 +902,7 @@ $(function () {
 
     if (IN_BROWSER) {
       var once = false;
-      var listener = function listener() {};
+      var listener = function listener() { };
       var options = Object.defineProperty({}, 'once', {
         get: function get$$1() {
           supported = true;
@@ -941,7 +977,7 @@ $(function () {
     type.trim().split(REGEXP_SPACES).forEach(function (event) {
       if (options.once && !onceSupported) {
         var _element$listeners = element.listeners,
-            listeners = _element$listeners === undefined ? {} : _element$listeners;
+          listeners = _element$listeners === undefined ? {} : _element$listeners;
 
 
         _handler = function handler() {
@@ -1042,10 +1078,10 @@ $(function () {
    */
   function getTransforms(_ref) {
     var rotate = _ref.rotate,
-        scaleX = _ref.scaleX,
-        scaleY = _ref.scaleY,
-        translateX = _ref.translateX,
-        translateY = _ref.translateY;
+      scaleX = _ref.scaleX,
+      scaleY = _ref.scaleY,
+      translateX = _ref.translateX,
+      translateY = _ref.translateY;
 
     var values = [];
 
@@ -1119,7 +1155,7 @@ $(function () {
    */
   function getPointer(_ref2, endOnly) {
     var pageX = _ref2.pageX,
-        pageY = _ref2.pageY;
+      pageY = _ref2.pageY;
 
     var end = {
       endX: pageX,
@@ -1144,7 +1180,7 @@ $(function () {
 
     forEach(pointers, function (_ref3) {
       var startX = _ref3.startX,
-          startY = _ref3.startY;
+        startY = _ref3.startY;
 
       pageX += startX;
       pageY += startY;
@@ -1174,8 +1210,8 @@ $(function () {
   function getAdjustedSizes(_ref4) // or 'cover'
   {
     var aspectRatio = _ref4.aspectRatio,
-        height = _ref4.height,
-        width = _ref4.width;
+      height = _ref4.height,
+      width = _ref4.width;
     var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'contain';
 
     var isValidNumber = function isValidNumber(value) {
@@ -1209,8 +1245,8 @@ $(function () {
    */
   function getRotatedSizes(_ref5) {
     var width = _ref5.width,
-        height = _ref5.height,
-        degree = _ref5.degree;
+      height = _ref5.height,
+      degree = _ref5.degree;
 
     degree = Math.abs(degree) % 180;
 
@@ -1231,9 +1267,9 @@ $(function () {
       width: newHeight,
       height: newWidth
     } : {
-      width: newWidth,
-      height: newHeight
-    };
+        width: newWidth,
+        height: newHeight
+      };
   }
 
   /**
@@ -1246,31 +1282,31 @@ $(function () {
    */
   function getSourceCanvas(image, _ref6, _ref7, _ref8) {
     var imageAspectRatio = _ref6.aspectRatio,
-        imageNaturalWidth = _ref6.naturalWidth,
-        imageNaturalHeight = _ref6.naturalHeight,
-        _ref6$rotate = _ref6.rotate,
-        rotate = _ref6$rotate === undefined ? 0 : _ref6$rotate,
-        _ref6$scaleX = _ref6.scaleX,
-        scaleX = _ref6$scaleX === undefined ? 1 : _ref6$scaleX,
-        _ref6$scaleY = _ref6.scaleY,
-        scaleY = _ref6$scaleY === undefined ? 1 : _ref6$scaleY;
+      imageNaturalWidth = _ref6.naturalWidth,
+      imageNaturalHeight = _ref6.naturalHeight,
+      _ref6$rotate = _ref6.rotate,
+      rotate = _ref6$rotate === undefined ? 0 : _ref6$rotate,
+      _ref6$scaleX = _ref6.scaleX,
+      scaleX = _ref6$scaleX === undefined ? 1 : _ref6$scaleX,
+      _ref6$scaleY = _ref6.scaleY,
+      scaleY = _ref6$scaleY === undefined ? 1 : _ref6$scaleY;
     var aspectRatio = _ref7.aspectRatio,
-        naturalWidth = _ref7.naturalWidth,
-        naturalHeight = _ref7.naturalHeight;
+      naturalWidth = _ref7.naturalWidth,
+      naturalHeight = _ref7.naturalHeight;
     var _ref8$fillColor = _ref8.fillColor,
-        fillColor = _ref8$fillColor === undefined ? 'transparent' : _ref8$fillColor,
-        _ref8$imageSmoothingE = _ref8.imageSmoothingEnabled,
-        imageSmoothingEnabled = _ref8$imageSmoothingE === undefined ? true : _ref8$imageSmoothingE,
-        _ref8$imageSmoothingQ = _ref8.imageSmoothingQuality,
-        imageSmoothingQuality = _ref8$imageSmoothingQ === undefined ? 'low' : _ref8$imageSmoothingQ,
-        _ref8$maxWidth = _ref8.maxWidth,
-        maxWidth = _ref8$maxWidth === undefined ? Infinity : _ref8$maxWidth,
-        _ref8$maxHeight = _ref8.maxHeight,
-        maxHeight = _ref8$maxHeight === undefined ? Infinity : _ref8$maxHeight,
-        _ref8$minWidth = _ref8.minWidth,
-        minWidth = _ref8$minWidth === undefined ? 0 : _ref8$minWidth,
-        _ref8$minHeight = _ref8.minHeight,
-        minHeight = _ref8$minHeight === undefined ? 0 : _ref8$minHeight;
+      fillColor = _ref8$fillColor === undefined ? 'transparent' : _ref8$fillColor,
+      _ref8$imageSmoothingE = _ref8.imageSmoothingEnabled,
+      imageSmoothingEnabled = _ref8$imageSmoothingE === undefined ? true : _ref8$imageSmoothingE,
+      _ref8$imageSmoothingQ = _ref8.imageSmoothingQuality,
+      imageSmoothingQuality = _ref8$imageSmoothingQ === undefined ? 'low' : _ref8$imageSmoothingQ,
+      _ref8$maxWidth = _ref8.maxWidth,
+      maxWidth = _ref8$maxWidth === undefined ? Infinity : _ref8$maxWidth,
+      _ref8$maxHeight = _ref8.maxHeight,
+      maxHeight = _ref8$maxHeight === undefined ? Infinity : _ref8$maxHeight,
+      _ref8$minWidth = _ref8.minWidth,
+      minWidth = _ref8$minWidth === undefined ? 0 : _ref8$minWidth,
+      _ref8$minHeight = _ref8.minHeight,
+      minHeight = _ref8$minHeight === undefined ? 0 : _ref8$minHeight;
 
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
@@ -1418,14 +1454,14 @@ $(function () {
         littleEndian = endianness === 0x4949;
 
         if (littleEndian || endianness === 0x4D4D /* bigEndian */) {
-            if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
-              var firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
+          if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
+            var firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
 
-              if (firstIFDOffset >= 0x00000008) {
-                ifdStart = tiffOffset + firstIFDOffset;
-              }
+            if (firstIFDOffset >= 0x00000008) {
+              ifdStart = tiffOffset + firstIFDOffset;
             }
           }
+        }
       }
     }
 
@@ -1438,16 +1474,16 @@ $(function () {
         _offset = ifdStart + i * 12 + 2;
 
         if (dataView.getUint16(_offset, littleEndian) === 0x0112 /* Orientation */) {
-            // 8 is the offset of the current tag's value
-            _offset += 8;
+          // 8 is the offset of the current tag's value
+          _offset += 8;
 
-            // Get the original orientation value
-            orientation = dataView.getUint16(_offset, littleEndian);
+          // Get the original orientation value
+          orientation = dataView.getUint16(_offset, littleEndian);
 
-            // Override the orientation with its default value
-            dataView.setUint16(_offset, 1, littleEndian);
-            break;
-          }
+          // Override the orientation with its default value
+          dataView.setUint16(_offset, 1, littleEndian);
+          break;
+        }
       }
     }
 
@@ -1525,9 +1561,9 @@ $(function () {
     },
     initContainer: function initContainer() {
       var element = this.element,
-          options = this.options,
-          container = this.container,
-          cropper = this.cropper;
+        options = this.options,
+        container = this.container,
+        cropper = this.cropper;
 
 
       addClass(cropper, CLASS_HIDDEN);
@@ -1553,7 +1589,7 @@ $(function () {
     // Canvas (image wrapper)
     initCanvas: function initCanvas() {
       var containerData = this.containerData,
-          imageData = this.imageData;
+        imageData = this.imageData;
       var viewMode = this.options.viewMode;
 
       var rotated = Math.abs(imageData.rotate) % 180 === 90;
@@ -1596,9 +1632,9 @@ $(function () {
     },
     limitCanvas: function limitCanvas(sizeLimited, positionLimited) {
       var options = this.options,
-          containerData = this.containerData,
-          canvasData = this.canvasData,
-          cropBoxData = this.cropBoxData;
+        containerData = this.containerData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData;
       var viewMode = options.viewMode;
       var aspectRatio = canvasData.aspectRatio;
 
@@ -1690,7 +1726,7 @@ $(function () {
     },
     renderCanvas: function renderCanvas(changed, transformed) {
       var canvasData = this.canvasData,
-          imageData = this.imageData;
+        imageData = this.imageData;
 
 
       if (transformed) {
@@ -1699,8 +1735,8 @@ $(function () {
           height: imageData.naturalHeight * Math.abs(imageData.scaleY || 1),
           degree: imageData.rotate || 0
         }),
-            naturalWidth = _getRotatedSizes.width,
-            naturalHeight = _getRotatedSizes.height;
+          naturalWidth = _getRotatedSizes.width,
+          naturalHeight = _getRotatedSizes.height;
 
         var width = canvasData.width * (naturalWidth / canvasData.naturalWidth);
         var height = canvasData.height * (naturalHeight / canvasData.naturalHeight);
@@ -1749,7 +1785,7 @@ $(function () {
     },
     renderImage: function renderImage(changed) {
       var canvasData = this.canvasData,
-          imageData = this.imageData;
+        imageData = this.imageData;
 
       var width = imageData.naturalWidth * (canvasData.width / canvasData.naturalWidth);
       var height = imageData.naturalHeight * (canvasData.height / canvasData.naturalHeight);
@@ -1774,7 +1810,7 @@ $(function () {
     },
     initCropBox: function initCropBox() {
       var options = this.options,
-          canvasData = this.canvasData;
+        canvasData = this.canvasData;
       var aspectRatio = options.aspectRatio;
 
       var autoCropArea = Number(options.autoCropArea) || 0.8;
@@ -1812,10 +1848,10 @@ $(function () {
     },
     limitCropBox: function limitCropBox(sizeLimited, positionLimited) {
       var options = this.options,
-          containerData = this.containerData,
-          canvasData = this.canvasData,
-          cropBoxData = this.cropBoxData,
-          limited = this.limited;
+        containerData = this.containerData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData,
+        limited = this.limited;
       var aspectRatio = options.aspectRatio;
 
 
@@ -1872,8 +1908,8 @@ $(function () {
     },
     renderCropBox: function renderCropBox() {
       var options = this.options,
-          containerData = this.containerData,
-          cropBoxData = this.cropBoxData;
+        containerData = this.containerData,
+        cropBoxData = this.cropBoxData;
 
 
       if (cropBoxData.width > cropBoxData.maxWidth || cropBoxData.width < cropBoxData.minWidth) {
@@ -1994,12 +2030,12 @@ $(function () {
     },
     preview: function preview() {
       var imageData = this.imageData,
-          canvasData = this.canvasData,
-          cropBoxData = this.cropBoxData;
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData;
       var cropBoxWidth = cropBoxData.width,
-          cropBoxHeight = cropBoxData.height;
+        cropBoxHeight = cropBoxData.height;
       var width = imageData.width,
-          height = imageData.height;
+        height = imageData.height;
 
       var left = cropBoxData.left - canvasData.left - imageData.left;
       var top = cropBoxData.top - canvasData.top - imageData.top;
@@ -2054,8 +2090,8 @@ $(function () {
   var events = {
     bind: function bind() {
       var element = this.element,
-          options = this.options,
-          cropper = this.cropper;
+        options = this.options,
+        cropper = this.cropper;
 
 
       if (isFunction(options.cropstart)) {
@@ -2097,8 +2133,8 @@ $(function () {
     },
     unbind: function unbind() {
       var element = this.element,
-          options = this.options,
-          cropper = this.cropper;
+        options = this.options,
+        cropper = this.cropper;
 
 
       if (isFunction(options.cropstart)) {
@@ -2143,8 +2179,8 @@ $(function () {
   var handlers = {
     resize: function resize() {
       var options = this.options,
-          container = this.container,
-          containerData = this.containerData;
+        container = this.container,
+        containerData = this.containerData;
 
       var minContainerWidth = Number(options.minContainerWidth) || 200;
       var minContainerHeight = Number(options.minContainerHeight) || 100;
@@ -2223,7 +2259,7 @@ $(function () {
       }
 
       var options = this.options,
-          pointers = this.pointers;
+        pointers = this.pointers;
 
       var action = void 0;
 
@@ -2300,7 +2336,7 @@ $(function () {
       }
 
       var action = this.action,
-          pointers = this.pointers;
+        pointers = this.pointers;
 
 
       if (e.changedTouches) {
@@ -2336,16 +2372,16 @@ $(function () {
   var change = {
     change: function change(e) {
       var options = this.options,
-          canvasData = this.canvasData,
-          containerData = this.containerData,
-          cropBoxData = this.cropBoxData,
-          pointers = this.pointers;
+        canvasData = this.canvasData,
+        containerData = this.containerData,
+        cropBoxData = this.cropBoxData,
+        pointers = this.pointers;
       var action = this.action;
       var aspectRatio = options.aspectRatio;
       var left = cropBoxData.left,
-          top = cropBoxData.top,
-          width = cropBoxData.width,
-          height = cropBoxData.height;
+        top = cropBoxData.top,
+        width = cropBoxData.width,
+        height = cropBoxData.height;
 
       var right = left + width;
       var bottom = top + height;
@@ -2924,8 +2960,8 @@ $(function () {
     move: function move(offsetX) {
       var offsetY = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : offsetX;
       var _canvasData = this.canvasData,
-          left = _canvasData.left,
-          top = _canvasData.top;
+        left = _canvasData.left,
+        top = _canvasData.top;
 
 
       return this.moveTo(isUndefined(offsetX) ? offsetX : left + Number(offsetX), isUndefined(offsetY) ? offsetY : top + Number(offsetY));
@@ -2998,11 +3034,11 @@ $(function () {
      */
     zoomTo: function zoomTo(ratio, pivot, _originalEvent) {
       var options = this.options,
-          canvasData = this.canvasData;
+        canvasData = this.canvasData;
       var width = canvasData.width,
-          height = canvasData.height,
-          naturalWidth = canvasData.naturalWidth,
-          naturalHeight = canvasData.naturalHeight;
+        height = canvasData.height,
+        naturalWidth = canvasData.naturalWidth,
+        naturalHeight = canvasData.naturalHeight;
 
 
       ratio = Number(ratio);
@@ -3145,9 +3181,9 @@ $(function () {
     getData: function getData$$1() {
       var rounded = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       var options = this.options,
-          imageData = this.imageData,
-          canvasData = this.canvasData,
-          cropBoxData = this.cropBoxData;
+        imageData = this.imageData,
+        canvasData = this.canvasData,
+        cropBoxData = this.cropBoxData;
 
       var data = void 0;
 
@@ -3194,8 +3230,8 @@ $(function () {
      */
     setData: function setData$$1(data) {
       var options = this.options,
-          imageData = this.imageData,
-          canvasData = this.canvasData;
+        imageData = this.imageData,
+        canvasData = this.canvasData;
 
       var cropBoxData = {};
 
@@ -3411,14 +3447,14 @@ $(function () {
       }
 
       var _getData = this.getData(),
-          initialX = _getData.x,
-          initialY = _getData.y,
-          initialWidth = _getData.width,
-          initialHeight = _getData.height;
+        initialX = _getData.x,
+        initialY = _getData.y,
+        initialWidth = _getData.width,
+        initialHeight = _getData.height;
 
-           
+
       var ratio = source.width / Math.floor(canvasData.naturalWidth);
-      
+
       if (ratio !== 1) {
         initialX *= ratio;
         initialY *= ratio;
@@ -3427,37 +3463,37 @@ $(function () {
       }
 
       var aspectRatio = initialWidth / initialHeight;
-      if( (options.width == options.height) && ((options.width == 1000) || (options.width == 860)) )
+      if ((options.width == options.height) && ((options.width == 1000) || (options.width == 860)))
         var aspectRatio = 1;
-      
+
       var maxSizes = getAdjustedSizes({
         aspectRatio: aspectRatio,
         width: options.maxWidth || Infinity,
         height: options.maxHeight || Infinity
-      });          
-                  
+      });
+
 
       var minSizes = getAdjustedSizes({
         aspectRatio: aspectRatio,
         width: options.minWidth || 0,
         height: options.minHeight || 0
       }, 'cover');
-      
+
 
       var _getAdjustedSizes = getAdjustedSizes({
         aspectRatio: aspectRatio,
         width: options.width || (ratio !== 1 ? source.width : initialWidth),
         height: options.height || (ratio !== 1 ? source.height : initialHeight)
       }),
-          width = _getAdjustedSizes.width,
-          height = _getAdjustedSizes.height;
+        width = _getAdjustedSizes.width,
+        height = _getAdjustedSizes.height;
 
-      
-      
+
+
       width = Math.min(maxSizes.width, Math.max(minSizes.width, width));
       height = Math.min(maxSizes.height, Math.max(minSizes.height, height));
 
-      
+
       // if((options.width == options.height) &&( (options.height == 1000) || (options.height ==860) )){
       //   width = options.width;
       //   height = options.height;
@@ -3473,8 +3509,8 @@ $(function () {
       context.fillRect(0, 0, width, height);
 
       var _options$imageSmoothi = options.imageSmoothingEnabled,
-          imageSmoothingEnabled = _options$imageSmoothi === undefined ? true : _options$imageSmoothi,
-          imageSmoothingQuality = options.imageSmoothingQuality;
+        imageSmoothingEnabled = _options$imageSmoothi === undefined ? true : _options$imageSmoothi,
+        imageSmoothingQuality = options.imageSmoothingQuality;
 
 
       context.imageSmoothingEnabled = imageSmoothingEnabled;
@@ -3521,34 +3557,34 @@ $(function () {
         srcHeight = 0;
         dstY = 0;
         dstHeight = 0;
-       
+
       } else if (srcY <= 0) {
         dstY = -srcY;
         srcY = 0;
         srcHeight = Math.min(sourceHeight, initialHeight + srcY);
         dstHeight = srcHeight;
-       
+
       } else if (srcY <= sourceHeight) {
         dstY = 0;
         srcHeight = Math.min(initialHeight, sourceHeight - srcY);
         dstHeight = srcHeight;
-       
+
       }
 
       var params = [srcX, srcY, srcWidth, srcHeight];
-      
+
       // Avoid "IndexSizeError"
       if (dstWidth > 0 && dstHeight > 0) {
         var scale = width / initialWidth;
-        if( (options.width == options.height) && ((options.width == 1000) || (options.width == 860)) )
-          var scale_2= height / initialHeight;
+        if ((options.width == options.height) && ((options.width == 1000) || (options.width == 860)))
+          var scale_2 = height / initialHeight;
         else
-          var scale_2= scale;
-        
-        
+          var scale_2 = scale;
+
+
         // params.push(dstX * scale, dstY * scale, dstWidth * scale, dstHeight * scale);
         params.push(dstX * scale, dstY * scale_2, dstWidth * scale, dstHeight * scale_2);
-        
+
       }
 
       // All the numerical parameters should be integer for `drawImage`
@@ -3594,8 +3630,8 @@ $(function () {
      */
     setDragMode: function setDragMode(mode) {
       var options = this.options,
-          dragBox = this.dragBox,
-          face = this.face;
+        dragBox = this.dragBox,
+        face = this.face;
 
 
       if (this.ready && !this.disabled) {
@@ -3697,7 +3733,7 @@ $(function () {
         this.imageData = {};
 
         var element = this.element,
-            options = this.options;
+          options = this.options;
 
 
         if (!options.checkOrientation || !window.ArrayBuffer) {
@@ -3752,7 +3788,7 @@ $(function () {
       key: 'read',
       value: function read(arrayBuffer) {
         var options = this.options,
-            imageData = this.imageData;
+          imageData = this.imageData;
 
         var orientation = getOrientation(arrayBuffer);
         var rotate = 0;
@@ -3784,7 +3820,7 @@ $(function () {
       key: 'clone',
       value: function clone() {
         var element = this.element,
-            url = this.url;
+          url = this.url;
 
         var crossOrigin = void 0;
         var crossOriginUrl = void 0;
@@ -3910,8 +3946,8 @@ $(function () {
         }
 
         var element = this.element,
-            options = this.options,
-            image = this.image;
+          options = this.options,
+          image = this.image;
 
         // Create cropper elements
 

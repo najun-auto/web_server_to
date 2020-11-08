@@ -28,9 +28,28 @@
     <!--<link rel="stylesheet" href="css/main.css">-->
   </head>
 
-  <body>
-    
+  <!-- hide and show -->
+  <script src="https://www.w3schools.com/lib/w3.js"></script> 
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cheerio/1.0.0-rc.1/index.js"></script> -->
+  
 
+  <div id="app">
+    <button onclick="fetchData()">get data</button>
+  </div>
+
+  <body>
+    <!-- input button -->
+    <div class="container_input">
+      <div class="container_input__item">
+        <form class="form">
+          <input type="text" class="form__field" placeholder="Your Img Address" id="geturl" value=""/>
+          <button type="button" class="btn btn--primary btn--inside uppercase" onclick="hstest()">Send</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- img title -->
     <!-- <script type="text/javascript" id="myScript" src="http://bla.com/js/script.js"></script> -->
     <!-- partial:index.partial.html -->
     <svg class="hidden" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink">
@@ -40,15 +59,18 @@
         </filter>
       </defs>
     </svg>
-    <img src="unnamed.png" class="background2">
+    <!-- <img src="unnamed.png" class="background2"> -->
 
     <!-- <a href="https://www.zhangxinxu.com/wordpress/?p=4571" class="back">one &raquo;</a> -->
-    <button onclick="GetImgUrl()" class="back"> give url </button>
+    <!-- <button onclick="GetImgUrl()" class="back"> give url </button> -->
+    <!-- <button onclick="hstest()">Try it</button> -->
+    <button onclick="getHTML()">Try it</button>
+    
 
     <div class="container2">
       <div class="inner">
         <div class="list">
-          <img id="test_img"src="https://fengyuanchen.github.io/cropper/images/picture.jpg" class="layer"
+          <img id="test_img" src="https://fengyuanchen.github.io/cropper/images/picture.jpg" class="layer"
             onclick="ImageClickEvent()">
           <div class="cover">
             <img id="1" src="https://fengyuanchen.github.io/cropper/images/picture.jpg" class="blur">
