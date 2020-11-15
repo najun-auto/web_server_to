@@ -1,6 +1,6 @@
 
 
-
+var imgurl = "";
 var elems = document.getElementsByClassName('container');
 var elems2 = document.getElementsByClassName('container2');
 for (var i = 0; i < elems.length; i += 1) {
@@ -31,23 +31,23 @@ function hstest() {
     elems3[i].style.display = 'none';
   }
 
-  var imgurl = document.getElementById("geturl").value;
+  // var imgurl = document.getElementById("geturl").value;
+  imgurl = document.getElementById("geturl").value;
   // document.querySelector("#mainImg")
 // img change
   // var imgurl = prompt("Input your URL", "https://www.naver.com");
   // if (imgurl != null) {
   //   var split_url = imgurl.split('+');
-    
-    https://kshbucket.s3-eu-west-1.amazonaws.com/uquiz/sub2.jpg
-    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg'
-    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub1.jpg'
-    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub2.jpg'
+        
+    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
+    document.getElementById("img2").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub1.jpg';
+    document.getElementById("img3").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub2.jpg';
     // document.getElementById("img1").src = split_url[0];    
     // temp_url = split_url[0];
     // document.getElementById("img2").src = split_url[1];
     // document.getElementById("img3").src = split_url[2];
     // document.getElementById("img4").src = split_url[3];
-  }
+  // }
   // var x = document.getElementsByClassName(".container");  
   // if (x.style.display === "none") {
   //   x.style.display = "block";
@@ -55,7 +55,7 @@ function hstest() {
   //   x.style.display = "none";
   // }
 }
-function ImageClickEvent() {
+function ImageClickEvent(x) {
   var $image = $('#image');
   var $inputImage = $('#inputImage');
   var options = {
@@ -72,7 +72,13 @@ function ImageClickEvent() {
     //   $dataScaleY.val(e.detail.scaleY);
     // }
   };
-  temp_url = "https://kshbucket.s3-eu-west-1.amazonaws.com/sub_1.jpg";
+  if (x ==0){
+    temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
+  }else{
+    temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+x+'.jpg';
+    console.log('https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+x+'.jpg');
+  }
+
   $image.cropper('destroy').attr('src', temp_url).cropper(options);
   $inputImage.val('');
 
