@@ -9,12 +9,18 @@ for (var i = 0; i < elems.length; i += 1) {
 }
 
 
-function GetImgUrl() {
-  var imgurl = prompt("Input your URL", "https://www.naver.com");
-  if (imgurl != null) {
-    document.getElementById("test_img").src = imgurl;
-  }
-}
+// function GetImgUrl() {
+//   var imgurl = prompt("Input your URL", "https://www.naver.com");
+//   if (imgurl != null) {
+//     var split_url = imgurl.split('+');
+    
+//     document.getElementById("img1").src = split_url[0];
+//     document.getElementById("img2").src = split_url[1];
+//     document.getElementById("img3").src = split_url[2];
+//     document.getElementById("img4").src = split_url[3];
+//   }
+// }
+var temp_url = "";
 function hstest() {
   var elems = document.getElementsByClassName('container');
   var elems2 = document.getElementsByClassName('container2');
@@ -25,9 +31,23 @@ function hstest() {
     elems3[i].style.display = 'none';
   }
 
-  var url_temp = document.getElementById("geturl").value;
-  document.querySelector("#mainImg")
-
+  var imgurl = document.getElementById("geturl").value;
+  // document.querySelector("#mainImg")
+// img change
+  // var imgurl = prompt("Input your URL", "https://www.naver.com");
+  // if (imgurl != null) {
+  //   var split_url = imgurl.split('+');
+    
+    https://kshbucket.s3-eu-west-1.amazonaws.com/uquiz/sub2.jpg
+    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg'
+    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub1.jpg'
+    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub2.jpg'
+    // document.getElementById("img1").src = split_url[0];    
+    // temp_url = split_url[0];
+    // document.getElementById("img2").src = split_url[1];
+    // document.getElementById("img3").src = split_url[2];
+    // document.getElementById("img4").src = split_url[3];
+  }
   // var x = document.getElementsByClassName(".container");  
   // if (x.style.display === "none") {
   //   x.style.display = "block";
@@ -52,12 +72,13 @@ function ImageClickEvent() {
     //   $dataScaleY.val(e.detail.scaleY);
     // }
   };
-  $image.cropper('destroy').attr('src', 'https://gi.esmplus.com/ks31206/mask/ms.jpg').cropper(options);
+  temp_url = "https://kshbucket.s3-eu-west-1.amazonaws.com/sub_1.jpg";
+  $image.cropper('destroy').attr('src', temp_url).cropper(options);
   $inputImage.val('');
 
-  var myScript = document.getElementById('test_img');
-  var myScriptSrc = myScript.getAttribute('src');
-  console.log(myScriptSrc);
+  // var myScript = document.getElementById('test_img');
+  // var myScriptSrc = myScript.getAttribute('src');
+  // console.log(myScriptSrc);
   // window.open('http://www.naver.com','_blank');
 }
 // main.js
