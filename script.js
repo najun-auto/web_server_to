@@ -25,7 +25,7 @@ function hstest() {
   var elems = document.getElementsByClassName('container');
   var elems2 = document.getElementsByClassName('container2');
   var elems3 = document.getElementsByClassName('container_input');
-  var elems4 = document.getElementsByClassName('btn2');
+  var elems4 = document.getElementsByClassName('arrow-button');
   for (var i = 0; i < elems.length; i += 1) {
     // elems[i].style.display = 'block';
     elems[i].style.display = 'none';
@@ -70,7 +70,7 @@ function back1() {
   var elems = document.getElementsByClassName('container');
   var elems2 = document.getElementsByClassName('container2');
   var elems3 = document.getElementsByClassName('container_input');
-  var elems4 = document.getElementsByClassName('btn2');
+  var elems4 = document.getElementsByClassName('arrow-button');
   if(elems[0].style.display == 'block'){
     for (var i = 0; i < elems.length; i += 1) {
       // elems[i].style.display = 'block';
@@ -101,7 +101,7 @@ function ImageClickEvent(x) {
   var elems = document.getElementsByClassName('container');
   var elems2 = document.getElementsByClassName('container2');
   var elems3 = document.getElementsByClassName('container_input');
-  var elems4 = document.getElementsByClassName('btn2');
+  var elems4 = document.getElementsByClassName('arrow-button');
   for (var i = 0; i < elems.length; i += 1) {
     // elems[i].style.display = 'block';
     elems[i].style.display = 'block';
