@@ -25,10 +25,13 @@ function hstest() {
   var elems = document.getElementsByClassName('container');
   var elems2 = document.getElementsByClassName('container2');
   var elems3 = document.getElementsByClassName('container_input');
+  var elems4 = document.getElementsByClassName('btn2');
   for (var i = 0; i < elems.length; i += 1) {
-    elems[i].style.display = 'block';
+    // elems[i].style.display = 'block';
+    elems[i].style.display = 'none';
     elems2[i].style.display = 'block';
     elems3[i].style.display = 'none';
+    elems4[i].style.display = 'none';
   }
 
   // var imgurl = document.getElementById("geturl").value;
@@ -38,10 +41,17 @@ function hstest() {
   // var imgurl = prompt("Input your URL", "https://www.naver.com");
   // if (imgurl != null) {
   //   var split_url = imgurl.split('+');
-        
-    document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
-    document.getElementById("img2").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub1.jpg';
-    document.getElementById("img3").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub2.jpg';
+
+  document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
+
+  for (var i = 1; i < 20; i += 1) {
+    document.getElementById("img"+(i+1)).src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+i+'.jpg';
+  }     
+   
+    // document.getElementById("img2").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub1.jpg';
+    // document.getElementById("img3").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub2.jpg';
+    // document.getElementById("img4").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub4.jpg';
+    // document.getElementById("img4").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub4.jpg';
     // document.getElementById("img1").src = split_url[0];    
     // temp_url = split_url[0];
     // document.getElementById("img2").src = split_url[1];
@@ -54,6 +64,22 @@ function hstest() {
   // } else {
   //   x.style.display = "none";
   // }
+}
+
+function back1() {
+  var elems = document.getElementsByClassName('container');
+  var elems2 = document.getElementsByClassName('container2');
+  var elems3 = document.getElementsByClassName('container_input');
+  var elems4 = document.getElementsByClassName('btn2');
+  if(elems[0].style.display == 'block'){
+    for (var i = 0; i < elems.length; i += 1) {
+      // elems[i].style.display = 'block';
+      elems[i].style.display = 'none';
+      elems2[i].style.display = 'block';
+      elems3[i].style.display = 'none';
+      elems4[i].style.display = 'none';
+    }
+  }
 }
 function ImageClickEvent(x) {
   var $image = $('#image');
@@ -72,8 +98,21 @@ function ImageClickEvent(x) {
     //   $dataScaleY.val(e.detail.scaleY);
     // }
   };
+  var elems = document.getElementsByClassName('container');
+  var elems2 = document.getElementsByClassName('container2');
+  var elems3 = document.getElementsByClassName('container_input');
+  var elems4 = document.getElementsByClassName('btn2');
+  for (var i = 0; i < elems.length; i += 1) {
+    // elems[i].style.display = 'block';
+    elems[i].style.display = 'block';
+    elems2[i].style.display = 'none';
+    elems3[i].style.display = 'none';
+    elems4[i].style.display = 'block';
+  }
+
   if (x ==0){
     temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
+    // temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub5.jpg';
   }else{
     temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+x+'.jpg';
     console.log('https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+x+'.jpg');
