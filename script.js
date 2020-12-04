@@ -42,9 +42,9 @@ function hstest() {
   // if (imgurl != null) {
   //   var split_url = imgurl.split('+');
 
-  document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
+  // document.getElementById("img1").src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
 
-  for (var i = 1; i < 20; i += 1) {
+  for (var i = 0; i < 20; i += 1) {
     document.getElementById("img"+(i+1)).src = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+i+'.jpg';
   }     
    
