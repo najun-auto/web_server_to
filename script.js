@@ -110,13 +110,13 @@ function ImageClickEvent(x) {
     elems4[i].style.display = 'block';
   }
 
-  if (x ==0){
-    temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
-    // temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub5.jpg';
-  }else{
-    temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+x+'.jpg';
-    console.log('https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+x+'.jpg');
-  }
+  // if (x ==0){
+  //   temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/main.jpg';
+  //   // temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub5.jpg';
+  // }else{
+    temp_url = 'https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+(x+1)+'.jpg';
+    console.log('https://kshbucket.s3-eu-west-1.amazonaws.com/'+imgurl+'/sub'+(x+1)+'.jpg');
+  // }
 
   $image.cropper('destroy').attr('src', temp_url).cropper(options);
   $inputImage.val('');
